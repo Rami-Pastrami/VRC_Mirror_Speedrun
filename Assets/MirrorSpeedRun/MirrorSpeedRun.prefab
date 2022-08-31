@@ -4921,8 +4921,9 @@ MonoBehaviour:
   syncBanner: 1
   syncSound: 1
   timer: 15
-  Mirror: {fileID: 0}
+  mirrorTransform: {fileID: 0}
   Banner: {fileID: 2509929267261477175}
+  MirrorAdjustment: {x: 1, y: 0, z: 0}
 --- !u!114 &2509929267108329460
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -115,8 +115,16 @@ public class SpeedRunUdon : UdonSharpBehaviour
 
     private Vector3 GetMirrorScale(Transform MirrorTrans, Vector3 MirrorAdjustment)
     {
-        Vector3 mirrorScale = MirrorTrans.localScale;
-        return new Vector3(mirrorScale.x * MirrorAdjustment.x, mirrorScale.y * MirrorAdjustment.y, mirrorScale.z * MirrorAdjustment.z);
+        Vector3 MirrorScale = new Vector3();
+        if(MirrorTrans == null)
+        {
+            Debug.LogWarning("MirrorSpeedRun: You need to drag the mirror from the scene to the Mirror Transform Component in the MirrorSpeedrun!");
+        }
+        else
+        {
+            MirrorScale = MirrorTrans.localScale;
+        }
+        return new Vector3(MirrorScale.x * MirrorAdjustment.x, MirrorScale.y * MirrorAdjustment.y, MirrorScale.z * MirrorAdjustment.z);
     }
 
     private Vector3 GetSizeCollider(Vector3 mirrorScale)
