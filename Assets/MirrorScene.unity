@@ -127,6 +127,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1754518056}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &128102818 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2958517746811294840, guid: 70279d83763c0d745a4e513a75053671,
+    type: 3}
+  m_PrefabInstance: {fileID: 1754518056}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &465423039
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,22 +392,22 @@ PrefabInstance:
         type: 3}
       propertyPath: DynamicMaterials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c815f7613a04b724089c206857e57c6a, type: 2}
+      objectReference: {fileID: 2100000, guid: fc21c4f960be4c442ad6aaa5ab5d1e0b, type: 2}
     - target: {fileID: 6759095419728963412, guid: 8894fa7e4588a5c4fab98453e558847d,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 6759095419728963412, guid: 8894fa7e4588a5c4fab98453e558847d,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[2]
       value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: c815f7613a04b724089c206857e57c6a, type: 2}
     - target: {fileID: 6759095419728963412, guid: 8894fa7e4588a5c4fab98453e558847d,
         type: 3}
       propertyPath: DynamicMaterials.Array.data[3]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8894fa7e4588a5c4fab98453e558847d, type: 3}
 --- !u!43 &1370255237
@@ -410,7 +416,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30032
+  m_Name: pb_Mesh19840
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -752,6 +758,26 @@ PrefabInstance:
       propertyPath: Mirror
       value: 
       objectReference: {fileID: 128102814}
+    - target: {fileID: 2509929267108329459, guid: 9e093a193f8354c428b88667d2e9ab1c,
+        type: 3}
+      propertyPath: mirrorTransform
+      value: 
+      objectReference: {fileID: 128102818}
+    - target: {fileID: 2509929267108329459, guid: 9e093a193f8354c428b88667d2e9ab1c,
+        type: 3}
+      propertyPath: MirrorAdjustment.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2509929267108329459, guid: 9e093a193f8354c428b88667d2e9ab1c,
+        type: 3}
+      propertyPath: MirrorAdjustment.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2509929267108329459, guid: 9e093a193f8354c428b88667d2e9ab1c,
+        type: 3}
+      propertyPath: MirrorAdjustment.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2509929267108329459, guid: 9e093a193f8354c428b88667d2e9ab1c,
         type: 3}
       propertyPath: serializationData.Prefab

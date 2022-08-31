@@ -29,15 +29,17 @@ public class SpeedRunUdon : UdonSharpBehaviour
     [Tooltip("The maximum number of seconds a player can wait before triggering the achievement")]
     public float timer = 12f;
 
-    [Header("Mirror Script is Attached to. MAKE SURE NEITHER THE MIRROR NOR THE SCRIPT ARE PARENTED TO EACH OTHER!")]
-    [Tooltip("From the Unity Hierachy, drag the mirror this script should be attached to here. This script and the associated mirror can directly share a parent, but neither should be parented to each other")]
-    public GameObject Mirror;
+    [Header("The Mirror in the hierarchy, make sure this prefab isn't parented to the mirror or vice versa.")]
+    [Tooltip("From the Unity hierarchy, drag the mirror this script should be attached to here. This script and the associated mirror can directly share a parent, but neither should be parented to each other")]
+    public Transform mirrorTransform;
 
     [Header("Banner Gameobject")]
     [Tooltip("The Banner Gameobject in the scene. best leave this to default")]
     public GameObject Banner;
 
-
+    [Header("Player Collider Scale Adjustment (Use Gizmos to see)")]
+    [Tooltip("If using a custom mirror, the scale calculation done in here may be inaccurate. Change these values from the default [1,0,0] if the sizing isn't quite right")]
+    public Vector3 MirrorAdjustment = new Vector3(1f, 0f, 0f);
 
 
     private ParticleSystem confetti;
@@ -46,26 +48,29 @@ public class SpeedRunUdon : UdonSharpBehaviour
 
     #endregion
 
+    //Following region are all calls made by unity
     #region UnityCalls
 
     private void Start()
     {
+        if(mirrorTransform == null)
+        {
+            Debug.LogError("MirrorSpeedRun: You forgot to drag the mirror into the Udon script in the inspector!");
+        }
+
         confetti = GetComponent<ParticleSystem>();
         bannerAnimator = Banner.GetComponent<Animator>();
         audioCheers = GetComponent<AudioSource>();
-        Transform mirrorTransform = Mirror.GetComponent<Transform>();
         BoxCollider PlayerDetector = GetComponent<BoxCollider>();
+        Vector3 mirrorScale = GetMirrorScale(mirrorTransform, MirrorAdjustment);
 
-        Vector3 mirrorPos = mirrorTransform.localPosition;
-        Vector3 mirrorScale = mirrorTransform.localScale;
-
-        PlayerDetector.size = new Vector3(mirrorScale.x, 1f, 1f);
-        PlayerDetector.center = new Vector3((mirrorScale.x - 1.5f) / -2f, 0.75f, -0.5f);
+        PlayerDetector.size = GetSizeCollider(mirrorScale);
+        PlayerDetector.center = GetCenterCollider(mirrorScale);
 
         //I don't know why, I don't want to know why, I shouldn't have to wonder why, but for whatever reason this stupid particle system isn't updating unless we do this terribleness
         var confettiShape = confetti.shape;
-        confettiShape.position = new Vector3((mirrorScale.x - 1.5f) / -2f, -0.25f, -0.5f);
-        confettiShape.scale = new Vector3((mirrorScale.x * 0.8f) / -2f, 1f, 1f);
+        confettiShape.position = GetCenterConfetti(mirrorScale);
+        confettiShape.scale = GetSizeConfetti(mirrorScale);
 
     }
 
@@ -87,7 +92,54 @@ public class SpeedRunUdon : UdonSharpBehaviour
         }
     }
 
+    //Custom Gizmo handler because people are dum dums
+    void OnDrawGizmos()
+    {
+        Vector3 mirrorScale = GetMirrorScale(mirrorTransform, MirrorAdjustment);
+        Gizmos.color = Color.green;
+
+        //Collider
+        Gizmos.DrawWireCube(transform.position + GetCenterCollider(mirrorScale), GetSizeCollider(mirrorScale));
+
+        Gizmos.color = Color.cyan;
+
+        //Particle Emitter
+        Gizmos.DrawWireCube(transform.position + GetCenterConfetti(mirrorScale), GetSizeConfetti(mirrorScale));
+    }
+
+
     #endregion
+
+    //Following region contains functions that calculates scales of the particles and colliders based on the mirror transform
+    #region MirrorScaling
+
+    private Vector3 GetMirrorScale(Transform MirrorTrans, Vector3 MirrorAdjustment)
+    {
+        Vector3 mirrorScale = MirrorTrans.localScale;
+        return new Vector3(mirrorScale.x * MirrorAdjustment.x, mirrorScale.y * MirrorAdjustment.y, mirrorScale.z * MirrorAdjustment.z);
+    }
+
+    private Vector3 GetSizeCollider(Vector3 mirrorScale)
+    {
+        return new Vector3(mirrorScale.x, 1f, 1f);
+    }
+
+    private Vector3 GetCenterCollider(Vector3 mirrorScale)
+    {
+        return (new Vector3((mirrorScale.x - 1.5f) / -2f, 0.75f, -0.5f)) + new Vector3(0f, MirrorAdjustment.y, MirrorAdjustment.z);
+    }
+
+    private Vector3 GetSizeConfetti(Vector3 mirrorScale)
+    {
+        return new Vector3((mirrorScale.x * 0.8f) / -2f, 1f, 1f);
+    }
+    private Vector3 GetCenterConfetti(Vector3 mirrorScale)
+    {
+        return new Vector3((mirrorScale.x - 1.5f) / -2f, -0.25f, -0.5f) + new Vector3(0f, MirrorAdjustment.y, MirrorAdjustment.z);
+    }
+
+    #endregion
+
 
     /// <summary>
     /// Triggers the achievement locally, and over network if enabled
